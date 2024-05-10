@@ -2,7 +2,6 @@ package repository
 
 import (
 	"Test/domain"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -39,7 +38,7 @@ func (repo *postRepository) FindAllField(query *domain.PostAllReq, pagination *d
 }
 
 func (repo *postRepository) query(database *gorm.DB, query *domain.PostAllReq) *gorm.DB {
-	fmt.Println(database, query)
+	database = database.Model(&domain.Post{})
 	if query.Title != "" {
 		database = database.Where("title=?", query.Title)
 	}
