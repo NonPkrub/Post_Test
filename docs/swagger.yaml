@@ -1,0 +1,187 @@
+definitions:
+  domain.PostReq:
+    properties:
+      content:
+        type: string
+      title:
+        type: string
+    type: object
+  domain.PostRes:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      published:
+        type: boolean
+      title:
+        type: string
+    type: object
+  domain.PostResponse:
+    properties:
+      count:
+        type: integer
+      limit:
+        type: integer
+      page:
+        type: integer
+      posts:
+        items:
+          $ref: '#/definitions/domain.PostRes'
+        type: array
+      total_page:
+        type: integer
+    type: object
+  domain.PostUpdateReq:
+    properties:
+      content:
+        type: string
+      id:
+        type: string
+      published:
+        type: boolean
+      title:
+        type: string
+      view_count:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /posts:
+    get:
+      consumes:
+      - application/json
+      description: Get all posts with optional pagination
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.PostResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all posts
+      tags:
+      - Posts
+    post:
+      consumes:
+      - application/json
+      description: Create a new post with the provided data
+      parameters:
+      - description: Post data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PostReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.PostRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: Create a new post
+      tags:
+      - Posts
+  /posts/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a post by its unique identifier
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No content
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Delete a post by ID
+      tags:
+      - Posts
+    get:
+      consumes:
+      - application/json
+      description: Get a post by its unique identifier
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.PostRes'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get a post by ID
+      tags:
+      - Posts
+    put:
+      consumes:
+      - application/json
+      description: Update a post with new data
+      parameters:
+      - description: Post ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated post data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.PostUpdateReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.PostRes'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Update a post by ID
+      tags:
+      - Posts
+swagger: "2.0"
