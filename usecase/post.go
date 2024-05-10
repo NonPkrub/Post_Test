@@ -23,7 +23,7 @@ func (uc *postUseCase) Create(post *domain.PostReq) (*domain.PostRes, error) {
 	id := uuid.New()
 
 	posts := &domain.Post{
-		ID:        id.String(),
+		ID:        id,
 		Title:     post.Title,
 		Content:   post.Content,
 		Published: false,
@@ -68,8 +68,13 @@ func (uc *postUseCase) GetAll(query *domain.PostAllReq, pagination *domain.Pagin
 }
 
 func (uc *postUseCase) GetByID(id string) (*domain.PostRes, error) {
+	uuid, err := uuid.Parse(id)
+	if err != nil {
+		return nil, err
+	}
+
 	postID := &domain.Post{
-		ID: string(id),
+		ID: uuid,
 	}
 	res, err := uc.postRepo.FindOne(postID)
 	if err != nil {
@@ -107,9 +112,13 @@ func (uc *postUseCase) UpdateByID(post *domain.PostUpdateReq) (*domain.PostRes, 
 }
 
 func (uc *postUseCase) DeleteByID(id string) error {
+	uuid, err := uuid.Parse(id)
+	if err != nil {
+		return err
+	}
 	post := &domain.Post{}
-	post.ID = id
-	err := uc.postRepo.DeleteByID(post)
+	post.ID = uuid
+	err = uc.postRepo.DeleteByID(post)
 	if err != nil {
 		return err
 	}

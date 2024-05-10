@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 type PostController struct {
@@ -209,7 +210,12 @@ func (pc *PostController) UpdateByID(c *fiber.Ctx) error {
 		return err
 	}
 
-	newForm.ID = id
+	uuid, err := uuid.Parse(id)
+	if err != nil {
+		return err
+	}
+
+	newForm.ID = uuid
 
 	if err := c.BodyParser(&newForm); err != nil {
 		return c.Status(fiber.ErrInternalServerError.Code).JSON(fiber.Map{

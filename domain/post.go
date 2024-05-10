@@ -2,10 +2,12 @@ package domain
 
 import (
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type Post struct {
-	ID        string    `json:"id"`
+	ID        uuid.UUID `json:"id"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
 	Published bool      `json:"published"`
@@ -20,15 +22,15 @@ type PostReq struct {
 }
 
 type PostUpdateReq struct {
-	ID        string `json:"id"`
-	Title     string `json:"title"`
-	Content   string `json:"content"`
-	Published bool   `json:"published"`
-	ViewCount int    `json:"view_count"`
+	ID        uuid.UUID `json:"id"`
+	Title     string    `json:"title"`
+	Content   string    `json:"content"`
+	Published bool      `json:"published"`
+	ViewCount int       `json:"view_count"`
 }
 
 type PostRes struct {
-	ID        string    `json:"id"`
+	ID        uuid.UUID `json:"id"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
 	Published bool      `json:"published"`
