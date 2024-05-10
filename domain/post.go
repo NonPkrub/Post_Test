@@ -7,13 +7,13 @@ import (
 )
 
 type Post struct {
-	ID        uuid.UUID `json:"id"`
-	Title     string    `json:"title"`
-	Content   string    `json:"content"`
-	Published bool      `json:"published"`
-	ViewCount int       `json:"view_count"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        uuid.UUID `json:"id" gorm:"type:uuid;primaryKey"`
+	Title     string    `json:"title" gorm:"not null"`
+	Content   string    `json:"content" gorm:"null"`
+	Published bool      `json:"published" gorm:"default:false"`
+	ViewCount int       `json:"view_count" gorm:"default:0"`
+	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
+	UpdatedAt time.Time `json:"updated_at" gorm:"autoCreateTime"`
 }
 
 type PostReq struct {

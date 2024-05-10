@@ -25,16 +25,11 @@ func (repo *postRepository) Create(post *domain.Post) (*domain.Post, error) {
 
 func (repo *postRepository) FindAllField(query *domain.PostAllReq, pagination *domain.Pagination) ([]*domain.Post, int64, int64, error) {
 	posts := []*domain.Post{}
+	var totalCount int64
 	database := repo.DB
 	offset := (pagination.Page - 1) * pagination.PageSize
-	err := repo.query(database, query).Offset(offset).Limit(pagination.PageSize).Find(&posts).Error
+	err := repo.query(database, query).Offset(offset).Limit(pagination.PageSize).Count(&totalCount).Find(&posts).Error
 	if err != nil {
-		return nil, 0, 0, err
-	}
-
-	var totalCount int64
-
-	if err := repo.query(database, query).Count(&totalCount).Error; err != nil {
 		return nil, 0, 0, err
 	}
 
